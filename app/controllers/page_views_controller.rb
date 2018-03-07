@@ -1,7 +1,7 @@
 class PageViewsController < ApplicationController
 
   def histogram
-
+    repo.find(urls: [], before: '', after: '', interval: '')
   end
 
   def page_view_params
