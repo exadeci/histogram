@@ -16,6 +16,7 @@ gem 'puma', '~> 3.7'
 group :development, :test do
   gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'pry-rails'
+  gem 'rspec-rails'
 end
 
 group :development do
