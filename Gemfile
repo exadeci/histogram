@@ -26,4 +26,3 @@ group :development do
 end
 
 gem 'elasticsearch'
-

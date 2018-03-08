@@ -13,20 +13,31 @@ class PageViewRepository
   def build_entry
     {
       body: {
-        query: range,
+        query: {
+          stats: filter, range: range
+        },
         aggs: interval
+      }
+    }
+  end
+
+  def filter
+    {
+      filter: {
+        terms: {
+          page_url: options[:urls]
+        }
       }
     }
   end
 
   def range
     {
-      range: {
-        time_frame: {
-          gtde: options[:after].presence || 1.month.ago,
-          lte: options[:before].presence || Time.current,
-          relation: 'within'
-        }
+      time_frame: {
+        gte: options[:after],
+        lte: options[:before],
+        relation: 'within',
+        format: 'epoch_millis'
       }
     }
   end
