@@ -26,3 +26,4 @@ group :development do
 end
 
 gem 'elasticsearch'
+gem 'rack-cors'

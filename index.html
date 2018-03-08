@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Histogram</title>
+    <meta charset="utf-8"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
+</head>
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .vue-d3 {
+        display: inline-block;
+        margin: 20px;
+        background: #CCC;
+    }
+
+    .vue-d3 .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px;
+    }
+</style>
+<body>
+<h1>Histogram </h1>
+<div class="container">
+    <div id="app">
+        <vue-histogram :width="width" :height="height" :data="data"></vue-histogram>
+    </div>
+
+    <div>
+        <h3>Gráfica:</h3>
+        <p>width: 300; height: 300;</p>
+        <h3>Line:</h3>
+        <p>x: cuatro puntos: 0, 100, 200 y 300</p>
+        <p>y: cuatro puntos: 150, 20, 280 y 150</p>
+    </div>
+</div>
+
+<template id="vue-histogram-template">
+    <div class="vue-d3">
+        <svg :width="width" :height="width">
+            <g transform="translate(0, 0)">
+                <path class="line" :d="d"></path>
+            </g>
+        </svg>
+    </div>
+</template>
+</div>
+
+<script>
+    Vue.component('vue-histogram', {
+        props: [
+            'width',
+            'height',
+            'data'
+        ],
+        computed: {
+            d: function () {
+                return d3.histogram()
+                //.domain(x.domain())
+                //.thresholds(x.ticks(binCount));
+            }
+        },
+        template: '#vue-histogram-template'
+    });
+
+    var vue_instance = new Vue({
+        el: '#app',
+        data: {
+            width: 300,
+            height: 300,
+            data: [
+                [0, 150]
+                , [100, 20]
+                , [200, 280]
+                , [300, 150]
+            ]
+            // , x: d3.scaleLinear().domain([1, 2])
+        },
+        methods: {
+            load_data: function () {
+                var payload = {
+                    urls: ["http://www.news.com.au/technology/environment/trump-pulls-us-out-of-paris-climate-agreement/news-story/f5c30a07c595a10a81d67611d0515a0a",
+                        "http://www.news.com.au/travel/travel-updates/incidents/disruptive-passenger-grounds-flight-after-storming-cockpit/news-story/5949c1e9542df41fb89e6cdcdc16b615"],
+                    after: '1488340603000',
+                    before: '1520469267124',
+                    interval: '10m'
+                };
+
+                this.$http.post('http://localhost:3000/page_views/histogram', payload).then(response => {
+
+                    console.log(response.body);
+
+            },
+                response =>
+                {
+                    // error callback
+                }
+            );
+            }
+        }
+    });
+
+    vue_instance.load_data();
+</script>
+</body>
+</html>
