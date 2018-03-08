@@ -14,30 +14,35 @@ class PageViewRepository
     {
       body: {
         query: {
-          stats: filter, range: range
+          bool: {
+            must: [
+              terms, range
+            ]
+          }
         },
         aggs: interval
       }
     }
   end
 
-  def filter
+  def terms
     {
-      filter: {
-        terms: {
-          page_url: options[:urls]
-        }
+      terms: {
+        page_url: options.urls
       }
+
     }
   end
 
   def range
     {
-      time_frame: {
-        gte: options[:after],
-        lte: options[:before],
-        relation: 'within',
-        format: 'epoch_millis'
+      range: {
+        derived_tstamp: {
+          gte: options.after,
+          lte: options.before,
+          relation: 'within',
+          format: 'epoch_millis'
+        }
       }
     }
   end
@@ -47,7 +52,7 @@ class PageViewRepository
       stats: {
         date_histogram: {
           field: 'derived_tstamp',
-          interval: options[:before].presence || '10m'
+          interval: options.interval.presence || '10m'
         }
       }
     }

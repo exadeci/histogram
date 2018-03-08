@@ -4,7 +4,7 @@ class PageViewsController < ApplicationController
     arguments = PageViewValidation.new(page_view_params)
 
     if arguments.valid?
-      render json: repo.find(urls: [], before: '', after: '', interval: '')
+      render json: repo.find(arguments)
     else
       render json: {error: arguments}, status: 422
     end
@@ -13,7 +13,7 @@ class PageViewsController < ApplicationController
   private
 
   def page_view_params
-    params.require(:page_view).permit(:urls, :before, :after, :interval)
+    params.require(:page_view).permit(:before, :after, :interval, urls: [])
   end
 
   def repo
