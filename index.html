@@ -32,14 +32,6 @@
     <div id="app">
         <vue-histogram :width="width" :height="height" :data="data"></vue-histogram>
     </div>
-
-    <div>
-        <h3>Gráfica:</h3>
-        <p>width: 300; height: 300;</p>
-        <h3>Line:</h3>
-        <p>x: cuatro puntos: 0, 100, 200 y 300</p>
-        <p>y: cuatro puntos: 150, 20, 280 y 150</p>
-    </div>
 </div>
 
 <template id="vue-histogram-template">
@@ -81,7 +73,6 @@
                 , [200, 280]
                 , [300, 150]
             ]
-            // , x: d3.scaleLinear().domain([1, 2])
         },
         methods: {
             load_data: function () {
